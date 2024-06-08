@@ -22,6 +22,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "liquidcrystal_i2c.h"
+#include "STM32F407_KeypadDriver.h"
+#include "string.h"
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,6 +101,8 @@ int main(void)
   MX_SPI1_Init();
   MX_USB_PCD_Init();
   /* USER CODE BEGIN 2 */
+  KEYPAD_Init();
+  char Key = KEYPAD_NOT_PRESSED;
 /*
 
   	HD44780_Init(2);
@@ -152,6 +157,8 @@ int main(void)
 	}
 */
 
+  //RELEPOMPA
+/*
   HAL_Delay(1000);
 
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET); // Relè ON
@@ -167,8 +174,47 @@ int main(void)
 		HD44780_SetCursor(0,0);
 		HD44780_PrintStr("OFF");
 	HAL_Delay(10000); // Attesa 5 secondi
+*/
+	int count=0;
+	int pos=6;
+	int n=0;
+	char number[3];
+	HD44780_Init(2);
+	HD44780_Clear();
+	HD44780_SetCursor(0,0);
+	HD44780_PrintStr("Eroga");
+	HD44780_SetCursor(14,0);
+	HD44780_PrintStr("ml");
+
+	while(count<3){
+		 HD44780_SetCursor(11+pos,0);
+		 HD44780_Cursor();
+		 Key = KEYPAD_Read();
+
+		 if(Key != KEYPAD_NOT_PRESSED){
+
+			 if(Key!='*' && Key!='#'){
+				 pos++;
+				 HD44780_SetCursor(11,0);
+				 number[count]=Key;
+				 HD44780_PrintStr(number);
+				 count++;
+			 } else{
+				 if(Key=='*' && (count>0)){
+					 pos--;
+					 count--;
+				 }
+			 }
 
 
+
+		 }
+
+		 /* Read Keypad Every 100ms */
+		 HAL_Delay(100);
+
+	}
+	HD44780_NoCursor();
 
   /* USER CODE END 2 */
 
@@ -179,6 +225,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  /*Read the Keypad */
+
+
   }
   /* USER CODE END 3 */
 }
@@ -366,12 +415,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, CS_I2C_SPI_Pin|LD4_Pin|LD3_Pin|LD5_Pin
                           |LD7_Pin|LD9_Pin|LD10_Pin|LD8_Pin
                           |LD6_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
@@ -395,11 +448,24 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PC0 PC1 PC2 PC3 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD10 PD11 PD12 PD13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA8 */
   GPIO_InitStruct.Pin = GPIO_PIN_8;
