@@ -29,6 +29,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+int pulse=0;
 
 /* USER CODE END PTD */
 
@@ -77,6 +78,7 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -179,12 +181,18 @@ int main(void)
 	int pos=6;
 	int n=0;
 	char number[3];
+	char buffPulse[50];
+	int mlInput;
+	pulse=0;
+	number[0]=number[1]=number[2]=number[3]='\0';
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
 	HD44780_Init(2);
 	HD44780_Clear();
 	HD44780_SetCursor(0,0);
 	HD44780_PrintStr("Eroga");
 	HD44780_SetCursor(14,0);
 	HD44780_PrintStr("ml");
+
 
 	while(count<3){
 		 HD44780_SetCursor(11+pos,0);
@@ -210,11 +218,19 @@ int main(void)
 
 		 }
 
+
 		 /* Read Keypad Every 100ms */
 		 HAL_Delay(100);
 
 	}
+	mlInput=atoi(number);
 	HD44780_NoCursor();
+	HD44780_Clear();
+	HD44780_SetCursor(0,0);
+
+	  HD44780_SetCursor(0,0);
+	  sprintf(buffPulse,"puls: %d", pulse);
+
 
   /* USER CODE END 2 */
 
@@ -225,8 +241,19 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  /*Read the Keypad */
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET); // Relè ON
+	  while(pulse<mlInput){
 
+		  	  HD44780_SetCursor(0,0);
+		  	  sprintf(buffPulse,"puls: %d", pulse);
+		  	  HD44780_PrintStr(buffPulse);
+		  	  HAL_Delay(100);
+	  }
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
+	  HD44780_SetCursor(0,0);
+	  sprintf(buffPulse,"puls: %d", pulse);
+	  HD44780_PrintStr(buffPulse);
+	  HAL_Delay(10000000);
 
   }
   /* USER CODE END 3 */
@@ -448,6 +475,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PF10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
   /*Configure GPIO pins : PC0 PC1 PC2 PC3 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
@@ -473,6 +506,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
