@@ -29,8 +29,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+float Flow;
 int pulse=0;
-
+float erogato;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -177,16 +178,45 @@ int main(void)
 		HD44780_PrintStr("OFF");
 	HAL_Delay(10000); // Attesa 5 secondi
 */
+
 	int count=0;
 	int pos=6;
 	int n=0;
 	char number[3];
-	char buffPulse[50];
+	char buffDaErogare[30];
+	char buffFlow[30];
+	char buffErogato[30];
 	int mlInput;
-	pulse=0;
+
+
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+	count=0;
+	pos=6;
+	erogato=0;
 	number[0]=number[1]=number[2]=number[3]='\0';
+
+
+
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
+
 	HD44780_Init(2);
+	HD44780_Clear();
+	HD44780_SetCursor(0,0);
+	HD44780_PrintStr("Progetto APC");
+
+	HD44780_SetCursor(0,1);
+	HD44780_PrintStr("Erogatore NFC");
+
+	HAL_Delay(10000);
+
 	HD44780_Clear();
 	HD44780_SetCursor(0,0);
 	HD44780_PrintStr("Eroga");
@@ -226,36 +256,37 @@ int main(void)
 	mlInput=atoi(number);
 	HD44780_NoCursor();
 	HD44780_Clear();
+
+
 	HD44780_SetCursor(0,0);
 
-	  HD44780_SetCursor(0,0);
-	  sprintf(buffPulse,"puls: %d", pulse);
 
 
-  /* USER CODE END 2 */
+	erogato=0;
+	pulse=0;
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET); // Relè ON
+	while(erogato<mlInput){
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-    /* USER CODE END WHILE */
+		  HD44780_SetCursor(0,0);
+		  //sprintf(buffPulse,"puls: %d", pulse);
+		  sprintf(buffFlow,"Flow:%3.1f",Flow);
+		  sprintf(buffErogato,"Erogato:%3.1f ml",erogato);
+		  HD44780_SetCursor(0,0);
+		  HD44780_PrintStr(buffFlow);
+		  HD44780_SetCursor(0,1);
+		  HD44780_PrintStr(buffErogato);
 
-    /* USER CODE BEGIN 3 */
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET); // Relè ON
-	  while(pulse<mlInput){
+	}
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
+	HD44780_SetCursor(0,0);
+	sprintf(buffDaErogare,"Da erogare:%d ml",mlInput);
+	HD44780_PrintStr(buffDaErogare);
+	HD44780_SetCursor(0,1);
+	sprintf(buffErogato,"Erogato:%3.1f ml",erogato);
+	HD44780_PrintStr(buffErogato);
+	HAL_Delay(10000);
 
-		  	  HD44780_SetCursor(0,0);
-		  	  sprintf(buffPulse,"puls: %d", pulse);
-		  	  HD44780_PrintStr(buffPulse);
-		  	  HAL_Delay(100);
-	  }
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
-	  HD44780_SetCursor(0,0);
-	  sprintf(buffPulse,"puls: %d", pulse);
-	  HD44780_PrintStr(buffPulse);
-	  HAL_Delay(10000000);
-
-  }
+	}
   /* USER CODE END 3 */
 }
 
@@ -456,10 +487,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : DRDY_Pin MEMS_INT3_Pin MEMS_INT4_Pin MEMS_INT1_Pin
-                           MEMS_INT2_Pin */
-  GPIO_InitStruct.Pin = DRDY_Pin|MEMS_INT3_Pin|MEMS_INT4_Pin|MEMS_INT1_Pin
-                          |MEMS_INT2_Pin;
+  /*Configure GPIO pins : DRDY_Pin MEMS_INT3_Pin MEMS_INT4_Pin MEMS_INT2_Pin */
+  GPIO_InitStruct.Pin = DRDY_Pin|MEMS_INT3_Pin|MEMS_INT4_Pin|MEMS_INT2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
@@ -487,11 +516,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : B1_Pin */
-  GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  /*Configure GPIO pin : PA0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PD10 PD11 PD12 PD13 */
   GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13;
@@ -508,6 +537,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 

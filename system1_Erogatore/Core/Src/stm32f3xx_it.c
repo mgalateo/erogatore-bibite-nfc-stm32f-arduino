@@ -26,7 +26,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-extern int pulse;
+	extern float Flow;
+	extern int pulse;
+	int i;
+	extern float erogato;
+	float freq;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -183,7 +187,14 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
+	i++;
+	if(i==500){
+		freq=pulse/0.5;
+		Flow=(freq * 1000.0f)/(7.5*60.0f);
+		erogato=erogato+Flow;
+		i=0;
+		pulse=0;
+	}
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
@@ -197,6 +208,21 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f3xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles EXTI line0 interrupt.
+  */
+void EXTI0_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8); // Relè OFF
+
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+
+  /* USER CODE END EXTI0_IRQn 1 */
+}
 
 /**
   * @brief This function handles EXTI line[15:10] interrupts.
