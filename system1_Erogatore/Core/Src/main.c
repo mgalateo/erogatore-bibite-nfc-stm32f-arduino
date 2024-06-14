@@ -32,6 +32,8 @@
 float Flow;
 int pulse=0;
 float erogato;
+int auth=0;
+int i=0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -49,9 +51,13 @@ I2C_HandleTypeDef hi2c1;
 
 SPI_HandleTypeDef hspi1;
 
+UART_HandleTypeDef huart4;
+
 PCD_HandleTypeDef hpcd_USB_FS;
 
 /* USER CODE BEGIN PV */
+uint8_t rxBuffer[12]; // Buffer per ricevere la parola "si"
+
 
 /* USER CODE END PV */
 
@@ -61,6 +67,7 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USB_PCD_Init(void);
+static void MX_UART4_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -103,8 +110,11 @@ int main(void)
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_USB_PCD_Init();
+  MX_UART4_Init();
   /* USER CODE BEGIN 2 */
   KEYPAD_Init();
+  //HAL_UART_Receive_IT(&huart4,(uint8_t *) rxBuffer, sizeof(rxBuffer));
+
   char Key = KEYPAD_NOT_PRESSED;
 /*
 
@@ -186,8 +196,9 @@ int main(void)
 	char buffDaErogare[30];
 	char buffFlow[30];
 	char buffErogato[30];
+	char messaggio[30];
 	int mlInput;
-
+	int b=5;
 
   /* USER CODE END 2 */
 
@@ -202,6 +213,7 @@ int main(void)
 	pos=6;
 	erogato=0;
 	number[0]=number[1]=number[2]=number[3]='\0';
+	messaggio[0]=messaggio[1]=messaggio[2]='A';
 
 
 
@@ -214,9 +226,23 @@ int main(void)
 
 	HD44780_SetCursor(0,1);
 	HD44780_PrintStr("Erogatore NFC");
+	HAL_UART_Receive_IT(&huart4,(uint8_t *) rxBuffer, sizeof(rxBuffer));
 
-	HAL_Delay(10000);
+	 while (auth!=1) {
 
+
+
+	    }
+	HD44780_Clear();
+	HD44780_SetCursor(0,0);
+	HD44780_Clear();
+	HD44780_PrintStr("ID Card auth:");
+	HD44780_SetCursor(0,1);
+	sprintf(messaggio,"%s",rxBuffer);
+	HD44780_PrintStr(messaggio);
+	HAL_Delay(5000);
+
+	//HAL_UART_AbortReceive(&huart4);
 	HD44780_Clear();
 	HD44780_SetCursor(0,0);
 	HD44780_PrintStr("Eroga");
@@ -264,6 +290,7 @@ int main(void)
 
 	erogato=0;
 	pulse=0;
+	i=0;
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET); // Relè ON
 	while(erogato<mlInput){
 
@@ -329,7 +356,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_I2C1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_UART4
+                              |RCC_PERIPHCLK_I2C1;
+  PeriphClkInit.Uart4ClockSelection = RCC_UART4CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
   PeriphClkInit.USBClockSelection = RCC_USBCLKSOURCE_PLL;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
@@ -423,6 +452,41 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
+  * @brief UART4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_UART4_Init(void)
+{
+
+  /* USER CODE BEGIN UART4_Init 0 */
+
+  /* USER CODE END UART4_Init 0 */
+
+  /* USER CODE BEGIN UART4_Init 1 */
+
+  /* USER CODE END UART4_Init 1 */
+  huart4.Instance = UART4;
+  huart4.Init.BaudRate = 9600;
+  huart4.Init.WordLength = UART_WORDLENGTH_8B;
+  huart4.Init.StopBits = UART_STOPBITS_1;
+  huart4.Init.Parity = UART_PARITY_NONE;
+  huart4.Init.Mode = UART_MODE_TX_RX;
+  huart4.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart4.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart4.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN UART4_Init 2 */
+
+  /* USER CODE END UART4_Init 2 */
 
 }
 
@@ -548,6 +612,16 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);
+  auth=1;
+  //HAL_UART_Receive_IT(&huart4,(uint8_t *) rxBuffer, sizeof(rxBuffer));
+}
+
 
 /* USER CODE END 4 */
 
