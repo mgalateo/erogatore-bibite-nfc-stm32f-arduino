@@ -199,6 +199,8 @@ int main(void)
 	char messaggio[30];
 	int mlInput;
 	int b=5;
+	uint16_t led_pins[] = {GPIO_PIN_8, GPIO_PIN_9, GPIO_PIN_10, GPIO_PIN_11,
+							   GPIO_PIN_12, GPIO_PIN_13, GPIO_PIN_14, GPIO_PIN_15};
 
   /* USER CODE END 2 */
 
@@ -214,10 +216,12 @@ int main(void)
 	erogato=0;
 	number[0]=number[1]=number[2]=number[3]='\0';
 	messaggio[0]=messaggio[1]=messaggio[2]='A';
+	auth=0;
 
 
 
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
+
 
 	HD44780_Init(2);
 	HD44780_Clear();
@@ -311,7 +315,26 @@ int main(void)
 	HD44780_SetCursor(0,1);
 	sprintf(buffErogato,"Erogato:%3.1f ml",erogato);
 	HD44780_PrintStr(buffErogato);
-	HAL_Delay(10000);
+
+	// Animazione LED termine erogazione
+		for (int i = 0; i < 8; i++) {
+			HAL_GPIO_WritePin(GPIOE, led_pins[i], GPIO_PIN_SET);
+			HAL_Delay(100);
+		}
+		HAL_Delay(200);
+		for (int i = 0; i < 8; i++) {
+				HAL_GPIO_WritePin(GPIOE, led_pins[i], GPIO_PIN_RESET);
+				HAL_Delay(200);
+			}
+		for (int i = 0; i < 8; i++) {
+				HAL_GPIO_WritePin(GPIOE, led_pins[i], GPIO_PIN_SET);
+			}
+		HAL_Delay(500);
+
+		for (int i = 0; i < 8; i++) {
+				HAL_GPIO_WritePin(GPIOE, led_pins[i], GPIO_PIN_RESET);
+			}
+	HAL_Delay(1000);
 
 	}
   /* USER CODE END 3 */
