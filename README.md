@@ -23,7 +23,7 @@ Tramite un tastierino viene così inserita la quantità di fluido da erogare esp
 Viene quindi attivata la pompa tramite un relè e quando il flussimetro rileva la quantità corretta viene interrotto il flusso spegnendo la pompa.
 
 ## STM collegamento Uart ad Arduino
-![Uart](https://raw.githubusercontent.com/mgalateo/erogatore-bibite-nfc-stm32f-arduino/main/Documenti%20e%20Immagini/Immagini/UartArduinoStm.png?token=GHSAT0AAAAAACOE5JM7SJISZ6NZX6DY3PLYZTPBFXQ "Connessione STM-Arduino")
+![Uart](https://raw.githubusercontent.com/mgalateo/erogatore-bibite-nfc-stm32f-arduino/main/Documenti%20e%20Immagini/Immagini/UartArduinoStm.png?token=GHSAT0AAAAAACOE5JM7PX5UE4NWYPDA5AC2ZTPDARA "Connessione STM-Arduino")
 
 Per la comunicazione tra la scheda ST e Arduino, è stata scelta una comunicazione asincrona tramite UART. Sulla STM32F3Discovery, è stata utilizzata la UART4 con i pin PC10 come TX e PC11 come RX. Sulla scheda Arduino, tramite la libreria "SoftwareSerial", sono stati scelti i pin 7 per TX e 8 per RX.
 
