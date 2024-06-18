@@ -5,17 +5,17 @@
 #include "stm32f3xx_hal.h"
 
 /** 
-  Keypad	STM32F4xx	 Description      I/O
+  Keypad	STM32F3xx	 Description      I/O
 
-     R1			PC1				Row 1           Output
-     R2			PC3				Row 2           Output
-     R3			PA1				Row 3           Output
-     R4			PA3				Row 4           Output
+     R1			PD12			Row 1           Output
+     R2			PD13			Row 2           Output
+     R3			PD11			Row 3           Output
+     R4			PD10			Row 4           Output
 		 
-     C1			PA5				Column 1        Input
-     C2			PA7				Column 2        Input
-     C3			PC5				Column 3        Input
-     C4			PB1				Column 4        Input
+     C1			PC3				Column 1        Input
+     C2			PC2				Column 2        Input
+     C3			PC1				Column 3        Input
+     C4			PC0				Column 4        Input
 **/
 
 
