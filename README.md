@@ -14,7 +14,9 @@ Inserire foto finale...
   - [Tastierino 4x4](#tastierino-4x4)
   - [Display LCD 16x2](#display-lcd-16x2)
   - [Pulsante Blu attivazione/disattivazione relè](#pulsante-blu-attivazionedisattivazione-relè)
+  - [Sintesi protocolli schema](#sintesi-protocolli-schema)
   - [Pinout View STM](#pinout-view-stm)
+  - [Software utilizzati](#software-utilizzati)
   - [Licenza](#licenza)
 
 
@@ -119,10 +121,19 @@ Nel caso del display LCD, il microcontrollore invia comandi e dati all'adattator
 ##  Pulsante Blu attivazione/disattivazione relè
 Per questioni di sicurezza e per testare meglio il processo è stato introdotto l'uso del pulsante user sulla scheda STM collegato al pin PA0. Tramite **interruzione** **EXTI0** alla pressione del pulsante viene cambiato lo stato del relè e quindi se la pompa stava erogando viene sospesa l'erogazione e viceversa se era spenta verrà attivata la pompa.
 
+##  Sintesi protocolli schema
+![Protocolli](Documenti_Immagini/Immagini/SPIi2cUart.gif "Protocolli")
+
+
 ##  Pinout View STM
 ![PINOUT](Documenti_Immagini/Immagini/Pinout.png "Pinout")
 
+## Software utilizzati
+![Software](Documenti_Immagini/Immagini/loghi.png "Software")
 
+Il sistema 1 (STM) è stato sviluppato tramite il software STM32CubeIDE.
+
+Il sistema 2 (Arduino) è stato sviluppato tramite l'ide di Arduino.
 
 
 ## Licenza
