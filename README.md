@@ -55,7 +55,7 @@ Dalle specifiche tecniche della pompa idraulica, il **consumo energetico** può 
 ## Flussimetro
 ![FLUSSIMETRO](Documenti_Immagini/Immagini/flussimetro.jpg "Flussimetro-Hall")
 
-Per calcolare il **quantitativo erogat**o è stato utilizzato il ** flussimetro YF-S201** . 
+Per calcolare il **quantitativo erogat**o è stato utilizzato il  **flussimetro YF-S201** . 
 Questo dispositivo è costituito da un corpo in plastica con un piccolo rotore interno che gira quando l'acqua passa attraverso il sensore. Il **movimento del rotore**, dotato di alette e di un piccolo **magnete**, genera **impulsi elettrici** che possono essere letti da un microcontrollore.
 
 Quando l'acqua fluisce attraverso il sensore, essa fa girare il rotore interno. Il sensore **Hall** presente nel flussimetro rileva il passaggio del magnete sulle alette del rotore e genera impulsi elettrici corrispondenti alla velocità del flusso d'acqua. Il numero di impulsi generati è proporzionale alla velocità del flusso, permettendo così di calcolare il volume d'acqua passato attraverso il sensore in un determinato periodo di tempo.
