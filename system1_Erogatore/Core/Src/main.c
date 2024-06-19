@@ -261,7 +261,7 @@ int main(void)
 
 		 if(Key != KEYPAD_NOT_PRESSED){
 
-			 if(Key!='*' && Key!='#'){
+			 if(Key!='*' && Key!='#'&& Key!='A' && Key!='B' && Key!='C' && Key!='D'){
 				 pos++;
 				 HD44780_SetCursor(11,0);
 				 number[count]=Key;

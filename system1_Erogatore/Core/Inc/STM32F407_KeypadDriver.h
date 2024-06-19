@@ -51,7 +51,7 @@
 #define KEYPAD_COLUMN_3_PIN			GPIO_PIN_1
 
 /* Column 4 default */
-#define KEYPAD_COLUMN_4_PORT		GPIOB
+#define KEYPAD_COLUMN_4_PORT		GPIOC
 #define KEYPAD_COLUMN_4_PIN			GPIO_PIN_0
 
 /* ROW port clock enable */
