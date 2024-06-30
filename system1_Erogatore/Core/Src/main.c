@@ -116,78 +116,7 @@ int main(void)
   //HAL_UART_Receive_IT(&huart4,(uint8_t *) rxBuffer, sizeof(rxBuffer));
 
   char Key = KEYPAD_NOT_PRESSED;
-/*
 
-  	HD44780_Init(2);
-  	HD44780_Clear();
-	HD44780_SetCursor(0,0);
-	HD44780_PrintStr("HELLO");
-	HD44780_SetCursor(10,1);
-	HD44780_PrintStr("WORLD");
-	HAL_Delay(2000);
-	HD44780_Clear();
-	HD44780_SetCursor(0,0);
-	HD44780_PrintStr("HELLO");
-	HAL_Delay(2000);
-	HD44780_NoBacklight();
-	HAL_Delay(2000);
-	HD44780_Backlight();
-
-	HAL_Delay(2000);
-	HD44780_Cursor();
-	HAL_Delay(2000);
-	HD44780_Blink();
-	HAL_Delay(5000);
-	HD44780_NoBlink();
-	HAL_Delay(2000);
-	HD44780_NoCursor();
-	HAL_Delay(2000);
-
-	HD44780_NoDisplay();
-	HAL_Delay(2000);
-	HD44780_Display();
-
-	HD44780_Clear();
-	HD44780_SetCursor(0,0);
-	HD44780_PrintStr("Learning STM32 with LCD is fun :-)");
-
-
-
-	for(int x=0; x<40; x=x+1)
-	{
-	 HD44780_ScrollDisplayLeft();  //HD44780_ScrollDisplayRight();
-	 HAL_Delay(500);
-	}
-
-	char snum[5];
-	for ( int x = 1; x <= 200 ; x++ )
-	{
-	 itoa(x, snum, 10);
-	 HD44780_Clear();
-	 HD44780_SetCursor(0,0);
-	 HD44780_PrintStr(snum);
-	 HAL_Delay (1000);
-	}
-*/
-
-  //RELEPOMPA
-/*
-  HAL_Delay(1000);
-
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET); // Relè ON
-	HD44780_Init(2);
-	  	HD44780_Clear();
-		HD44780_SetCursor(0,0);
-		HD44780_PrintStr("ON");
-	HAL_Delay(10000); // Attesa 5 secondi
-
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET); // Relè OFF
-	HD44780_Init(2);
-	  	HD44780_Clear();
-		HD44780_SetCursor(0,0);
-		HD44780_PrintStr("OFF");
-	HAL_Delay(10000); // Attesa 5 secondi
-*/
 
 	int count=0;
 	int pos=6;
@@ -213,7 +142,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	count=0;
 	pos=6;
-	erogato=0;
+
 	number[0]=number[1]=number[2]=number[3]='\0';
 	messaggio[0]=messaggio[1]=messaggio[2]='A';
 	auth=0;
@@ -244,7 +173,7 @@ int main(void)
 	HD44780_SetCursor(0,1);
 	sprintf(messaggio,"%s",rxBuffer);
 	HD44780_PrintStr(messaggio);
-	HAL_Delay(5000);
+	HAL_Delay(3000);
 
 	//HAL_UART_AbortReceive(&huart4);
 	HD44780_Clear();
@@ -294,6 +223,7 @@ int main(void)
 
 	erogato=0;
 	pulse=0;
+	Flow=0;
 	i=0;
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET); // Relè ON
 	while(erogato<mlInput){

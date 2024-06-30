@@ -189,8 +189,8 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 0 */
 	i++;
 	if(i==500){
-		freq=pulse/0.5;
-		Flow=(freq * 1000.0f)/(7.5*60.0f);
+		freq=pulse;
+		Flow=(freq * 1000.0f)/(7*60.0f);
 		erogato=erogato+Flow;
 		i=0;
 		pulse=0;
