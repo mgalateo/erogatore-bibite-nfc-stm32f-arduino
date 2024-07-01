@@ -1,8 +1,9 @@
 # Erogatore di bibite con autorizzazione RFID con stm32f-arduino 🚰
 Progettazione di un erogatore di bevande con autorizzazione RFID. Trasmissione tra stm32f3Discovery e Arduino uno. Progetto per l'esame CSD/APC.
 
-Inserire foto finale...
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/9ba1yRj4ODM/hqdefault.jpg)](https://www.youtube.com/watch?v=9ba1yRj4ODM&ab_channel=MauroGalateo)
 
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=9ba1yRj4ODM&ab_channel=MauroGalateo)
 ## Indice
 - [Erogatore di bibite con autorizzazione RFID con stm32f-arduino 🚰](#erogatore-di-bibite-con-autorizzazione-rfid-con-stm32f-arduino-)
   - [Indice](#indice)
