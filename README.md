@@ -141,6 +141,6 @@ Il sistema 2 (Arduino) è stato sviluppato tramite l'ide di Arduino.
 
 ## Lascia una ⭐ se ti è stato utile
 
-[![GitHub stars](https://img.shields.io/github/stars/exampleuser/examplerepo?style=social)](https://github.com/mgalateo/erogatore-bibite-nfc-stm32f-arduino)
+[![GitHub stars](https://img.shields.io/github/stars/mgalateo/erogatore-bibite-nfc-stm32f-arduino?style=social)](https://github.com/mgalateo/erogatore-bibite-nfc-stm32f-arduino)
 
 
