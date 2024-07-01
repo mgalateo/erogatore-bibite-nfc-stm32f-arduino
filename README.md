@@ -18,6 +18,8 @@ Progettazione di un erogatore di bevande con autorizzazione RFID. Trasmissione t
   - [Sintesi protocolli schema](#sintesi-protocolli-schema)
   - [Pinout View STM](#pinout-view-stm)
   - [Software utilizzati](#software-utilizzati)
+  - [Lascia una ⭐ se ti è stato utile](#lascia-una--se-ti-è-stato-utile)
+
 
 
 ## Introduzione
@@ -134,5 +136,11 @@ Per questioni di sicurezza e per testare meglio il processo è stato introdotto 
 Il sistema 1 (STM) è stato sviluppato tramite il software STM32CubeIDE.
 
 Il sistema 2 (Arduino) è stato sviluppato tramite l'ide di Arduino.
+
+
+
+## Lascia una ⭐ se ti è stato utile
+
+[![GitHub stars](https://img.shields.io/github/stars/exampleuser/examplerepo?style=social)](https://github.com/mgalateo/erogatore-bibite-nfc-stm32f-arduino)
 
 
