@@ -18,7 +18,6 @@ Progettazione di un erogatore di bevande con autorizzazione RFID. Trasmissione t
   - [Sintesi protocolli schema](#sintesi-protocolli-schema)
   - [Pinout View STM](#pinout-view-stm)
   - [Software utilizzati](#software-utilizzati)
-  - [Licenza](#licenza)
 
 
 ## Introduzione
@@ -135,9 +134,5 @@ Per questioni di sicurezza e per testare meglio il processo è stato introdotto 
 Il sistema 1 (STM) è stato sviluppato tramite il software STM32CubeIDE.
 
 Il sistema 2 (Arduino) è stato sviluppato tramite l'ide di Arduino.
-
-
-## Licenza
-Informazioni sulla licenza del progetto.
 
 
